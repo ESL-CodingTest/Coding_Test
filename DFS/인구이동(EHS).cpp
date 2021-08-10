@@ -1,23 +1,24 @@
+//https://www.acmicpc.net/problem/16234
 #include<iostream>
 #include<queue>
 #include<vector>
-#include<algorithm> // abs ÇÔ¼ö »ç¿ë  
+#include<algorithm> // abs í•¨ìˆ˜ ì‚¬ìš©  
 using namespace std;
 
 int N, L, R;
 
-int map[50][50];    // ÀÎ±¸ ¼ö  
-bool check[50][50]; // ÀÎ±¸ÀÌµ¿(¿¬ÇÕ)  ¿©ºÎ È®ÀÎ (ÀÌµ¿ ½Ã true) 
+int map[50][50];    // ì¸êµ¬ ìˆ˜  
+bool check[50][50]; // ì¸êµ¬ì´ë™(ì—°í•©)  ì—¬ë¶€ í™•ì¸ (ì´ë™ ì‹œ true) 
 
-// ÀÌµ¿ÇÒ ³× °¡Áö ¹æÇâ Á¤ÀÇ (»ó, ÇÏ, ÁÂ, ¿ì) 
+// ì´ë™í•  ë„¤ ê°€ì§€ ë°©í–¥ ì •ì˜ (ìƒ, í•˜, ì¢Œ, ìš°) 
 int dx[] = {-1, 1, 0, 0};
 int dy[] = {0, 0, -1, 1};
 
 void bfs(int inx, int iny) {	
-    int cnt=0; // ÇÑ°³ÀÇ ¿¬ÇÕÀ» ÀÌ·ç´Â  ³ª¶ó ¼ıÀÚ  
+    int cnt=0; // í•œê°œì˜ ì—°í•©ì„ ì´ë£¨ëŠ”  ë‚˜ë¼ ìˆ«ì  
     
-    queue<pair<int, int> > q; // bfs¸¦ À§ÇÑ queue  
-	vector<pair<int,int> > v; // ¿¬ÇÕ ±¹°¡ ÀúÀå vector 
+    queue<pair<int, int> > q; // bfsë¥¼ ìœ„í•œ queue  
+	vector<pair<int,int> > v; // ì—°í•© êµ­ê°€ ì €ì¥ vector 
 	
     q.push({inx, iny});
     v.push_back({inx,iny});
@@ -29,18 +30,18 @@ void bfs(int inx, int iny) {
         int y = q.front().second;
         q.pop();
         
-        // µ¿,¼­,³²,ºÏ¿¡ ´ëÇØ¼­ È®ÀÎ  
+        // ë™,ì„œ,ë‚¨,ë¶ì— ëŒ€í•´ì„œ í™•ì¸  
         for (int i = 0; i < 4; i++) {
             int nx = x + dx[i];
             int ny = y + dy[i];
             
-            // ÁÖ¾îÁø ¶¥ Å©±â¸¦ ¹ş¾î³­ °æ¿ì  
+            // ì£¼ì–´ì§„ ë•… í¬ê¸°ë¥¼ ë²—ì–´ë‚œ ê²½ìš°  
             if (nx < 0 || nx >= N || ny < 0 || ny >= N) continue;
             
-            // ÀÌ¹Ì ÀÎ±¸ÀÌµ¿ÀÌ ÀÏ¾î³­ Áö¿ªÀÎ °æ¿ì  
+            // ì´ë¯¸ ì¸êµ¬ì´ë™ì´ ì¼ì–´ë‚œ ì§€ì—­ì¸ ê²½ìš°  
             if(check[nx][ny]==true) continue;
             
-            // ÀÎ±¸¼ö Â÷ÀÌ°¡ L°ú R »çÀÌ °ªÀÌ¶ó¸é ÀÎ±¸ÀÌµ¿  
+            // ì¸êµ¬ìˆ˜ ì°¨ì´ê°€ Lê³¼ R ì‚¬ì´ ê°’ì´ë¼ë©´ ì¸êµ¬ì´ë™  
             int temp = abs(map[x][y]-map[nx][ny]);
             if (L<=temp && temp<=R) {
                 q.push({nx, ny});
@@ -51,23 +52,23 @@ void bfs(int inx, int iny) {
         } 
     }
     
-    // ÀÎ±¸ÀÌµ¿ÀÌ ÀÏ¾î³­ ³ª¶ó¼ıÀÚ°¡ 1ÀÏ ¶§, Áï ÀÎ±¸ÀÌµ¿ÀÌ ÀÏ¾î³ªÁö ¾ÊÀº°æ¿ì  
+    // ì¸êµ¬ì´ë™ì´ ì¼ì–´ë‚œ ë‚˜ë¼ìˆ«ìê°€ 1ì¼ ë•Œ, ì¦‰ ì¸êµ¬ì´ë™ì´ ì¼ì–´ë‚˜ì§€ ì•Šì€ê²½ìš°  
     if(cnt==1) {
     	check[v[0].first][v[0].second]=false;
 		v.clear();
 		return; 	
 	}
 	
-	// ÀÎ±¸ÀÌµ¿ÇÏ´Â ¸ğµç ³ª¶óÀÇ ÀÎ±¸ ¼ö ÇÕ°è ±¸ÇÏ±â  
+	// ì¸êµ¬ì´ë™í•˜ëŠ” ëª¨ë“  ë‚˜ë¼ì˜ ì¸êµ¬ ìˆ˜ í•©ê³„ êµ¬í•˜ê¸°  
     int sum=0;
     for(int i=0; i<v.size(); i++){
     	sum+=map[v[i].first][v[i].second];
 	}
 	
-	// (¿¬ÇÕÀÇ ÀÎ±¸¼ö) / (¿¬ÇÕÀ» ÀÌ·ç°í ÀÖ´Â Ä­ÀÇ °³¼ö) ±¸ÇÏ±â  
+	// (ì—°í•©ì˜ ì¸êµ¬ìˆ˜) / (ì—°í•©ì„ ì´ë£¨ê³  ìˆëŠ” ì¹¸ì˜ ê°œìˆ˜) êµ¬í•˜ê¸°  
 	sum = sum/cnt;
 	
-	// À§¿¡¼­ ±¸ÇÑ °ªÀ¸·Î ¿¬ÇÕ ±¹°¡ ÀÎ±¸¼ö ÃÊ±âÈ­  
+	// ìœ„ì—ì„œ êµ¬í•œ ê°’ìœ¼ë¡œ ì—°í•© êµ­ê°€ ì¸êµ¬ìˆ˜ ì´ˆê¸°í™”  
 	for(int i=0; i<v.size(); i++){
     	map[v[i].first][v[i].second]=sum;
 	}
@@ -75,14 +76,14 @@ void bfs(int inx, int iny) {
 }
 
 int main(){
-	// ÀÔÃâ·Â »¡¶óÁö°Ô ÇØÁÜ. 
+	// ì…ì¶œë ¥ ë¹¨ë¼ì§€ê²Œ í•´ì¤Œ. 
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     
-    // ÀÔ·Â  
+    // ì…ë ¥  
     cin>>N>>L>>R;
 	
-	// ÀÎ±¸ ¼ö ÀÔ·Â  
+	// ì¸êµ¬ ìˆ˜ ì…ë ¥  
     for(int i=0;i<N;i++){
         for(int j=0;j<N;j++) cin>>map[i][j];
 	}
@@ -91,19 +92,19 @@ int main(){
 	int ans=0; 
 	while(true){
 		
-		// check ¹è¿­ ¸ğµÎ false·Î ÃÊ±âÈ­  
+		// check ë°°ì—´ ëª¨ë‘ falseë¡œ ì´ˆê¸°í™”  
 		for(int i=0;i<N;i++){
 			for(int j=0;j<N;j++) check[i][j]=false;
 		}
 	
-		// ¸ğµç ÁÂÇ¥¿¡ ´ëÇØ¼­ bfs·Î ±¹°æ¼± °³¹æ  
+		// ëª¨ë“  ì¢Œí‘œì— ëŒ€í•´ì„œ bfsë¡œ êµ­ê²½ì„  ê°œë°©  
 		for(int i=0;i<N;i++){
 			for(int j=0;j<N;j++){
 				if(check[i][j]==false) bfs(i,j);
 			}		
 		}
 		
-		// ¿¬ÇÕÀÌ  ¹ß»ıÇÏÁö ¾ÊÀ¸¸é ¹İº¹¹® ºüÁ®³ª°¨  
+		// ì—°í•©ì´  ë°œìƒí•˜ì§€ ì•Šìœ¼ë©´ ë°˜ë³µë¬¸ ë¹ ì ¸ë‚˜ê°  
 		bool ch = false;
 		for(int i=0;i<N;i++){
 			for(int j=0;j<N;j++){
@@ -115,9 +116,9 @@ int main(){
 		}
 		if(ch==false) break;
 		
-		ans++; // 1ÀÏ Áõ°¡  	
+		ans++; // 1ì¼ ì¦ê°€  	
 	}
 	
-	// ´ä Ãâ·Â  
+	// ë‹µ ì¶œë ¥  
 	cout<<ans;
 }
