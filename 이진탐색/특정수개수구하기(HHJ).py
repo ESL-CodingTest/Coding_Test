@@ -33,7 +33,8 @@ while(start <= end):
         end = mid - 1
 
 x_e = end
-
+print(x_s)
+print(x_e)
 if x_e - x_s + 1 == 0:
     print(-1)
 else:
